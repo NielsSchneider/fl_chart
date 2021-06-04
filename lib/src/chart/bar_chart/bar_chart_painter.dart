@@ -308,11 +308,24 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
             for (var i = 0; i < barRod.rodStackItems.length; i++) {
               final stackItem = barRod.rodStackItems[i];
               final stackFromY = getPixelY(stackItem.fromY, drawSize, holder);
-              final stackToY = getPixelY(stackItem.toY, drawSize, holder);
+              var stackToY = getPixelY(stackItem.toY, drawSize, holder);
+              if (i < barRod.rodStackItems.length - 1 && barRod.rodStackItemSpace > 0.0) {
+                if (i < barRod.rodStackItems.length - 1 && barRod.rodStackItemSpace > 0.0) {
+                  stackToY = barRod.y > 0
+                      ? min(stackToY + barRod.rodStackItemSpace, stackFromY) //positive
+                      : max(stackToY - barRod.rodStackItemSpace, stackFromY); //negative
+                }
+              }
 
               _barPaint.color = stackItem.color;
+
               canvasWrapper.save();
-              canvasWrapper.clipRect(Rect.fromLTRB(left, stackToY, right, stackFromY));
+              canvasWrapper.clipRect(Rect.fromLTRB(
+                left,
+                stackToY,
+                right,
+                stackFromY,
+              ));
               canvasWrapper.drawRRect(barRRect, _barPaint);
               canvasWrapper.restore();
             }
@@ -320,6 +333,23 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         }
       }
     }
+  }
+
+  double _recalculatedStackToY(
+    double stackFromY,
+    double stackToY,
+    double calculatedRodStackItemSpace,
+  ) {
+    if (stackFromY > stackToY) {
+      stackToY = stackToY - calculatedRodStackItemSpace < stackToY
+          ? stackToY + calculatedRodStackItemSpace
+          : stackToY;
+    } else {
+      stackToY = stackToY + calculatedRodStackItemSpace > stackToY
+          ? stackToY - calculatedRodStackItemSpace
+          : stackToY;
+    }
+    return stackToY;
   }
 
   void _drawTitles(

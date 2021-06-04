@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../bar_chart/samples/bar_chart_sample3.dart';
 import '../bar_chart/samples/bar_chart_sample4.dart';
 import '../bar_chart/samples/bar_chart_sample5.dart';
+import '../bar_chart/samples/bar_chart_sample6.dart';
 
 class BarChartPage3 extends StatelessWidget {
   @override
@@ -21,6 +22,10 @@ class BarChartPage3 extends StatelessWidget {
             height: 18,
           ),
           BarChartSample5(),
+          const SizedBox(
+            height: 18,
+          ),
+          BarChartSample6(),
         ],
       ),
     );
