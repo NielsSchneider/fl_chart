@@ -307,6 +307,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
           if (barRod.rodStackItems.isNotEmpty) {
             for (var i = 0; i < barRod.rodStackItems.length; i++) {
               final stackItem = barRod.rodStackItems[i];
+              final stackItemBorderRadius = stackItem.borderRadius;
               final stackFromY = getPixelY(stackItem.fromY, drawSize, holder);
               var stackToY = getPixelY(stackItem.toY, drawSize, holder);
               if (i < barRod.rodStackItems.length - 1 && barRod.rodStackItemSpace > 0.0) {
@@ -319,13 +320,24 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
 
               _barPaint.color = stackItem.color;
 
-              canvasWrapper.save();
-              canvasWrapper.clipRect(Rect.fromLTRB(
+              var rect = Rect.fromLTRB(
                 left,
                 stackToY,
                 right,
                 stackFromY,
-              ));
+              );
+
+              canvasWrapper.save();
+              if (stackItem.borderRadius == BorderRadius.zero) {
+                canvasWrapper.clipRect(rect);
+              } else {
+                var rRect = RRect.fromRectAndCorners(rect,
+                    topLeft: stackItemBorderRadius.topLeft,
+                    topRight: stackItemBorderRadius.topRight,
+                    bottomLeft: stackItemBorderRadius.bottomLeft,
+                    bottomRight: stackItemBorderRadius.bottomRight);
+                canvasWrapper.clipRRect(rRect);
+              }
               canvasWrapper.drawRRect(barRRect, _barPaint);
               canvasWrapper.restore();
             }

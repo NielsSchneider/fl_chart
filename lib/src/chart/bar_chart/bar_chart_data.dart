@@ -313,7 +313,8 @@ class BarChartRodData with EquatableMixin {
   ///     BarChartRodStackItem(0, 3, Colors.red),
   ///     BarChartRodStackItem(3, 6, Colors.green),
   ///     BarChartRodStackItem(6, 9, Colors.blue),
-  ///   ]
+  ///   ],
+  ///   rodStackItemSpace: 3.0,
   /// )
   /// ```
   BarChartRodData({
@@ -412,6 +413,9 @@ class BarChartRodStackItem with EquatableMixin {
   /// Renders a Stacked Chart section with [color]
   final Color color;
 
+  /// Renders a Stacked Chart section with [radius]
+  final BorderRadius borderRadius;
+
   /// Renders a section of Stacked Chart from [fromY] to [toY] with [color]
   /// for example if you want to have a Stacked Chart with three colors:
   /// ```
@@ -419,13 +423,14 @@ class BarChartRodStackItem with EquatableMixin {
   ///   y: 9,
   ///   color: Colors.grey,
   ///   rodStackItems: [
-  ///     BarChartRodStackItem(0, 3, Colors.red),
-  ///     BarChartRodStackItem(3, 6, Colors.green),
-  ///     BarChartRodStackItem(6, 9, Colors.blue),
-  ///   ]
+  ///     BarChartRodStackItem(0, 3, Colors.red, BorderRadius.circular(4.0)),
+  ///     BarChartRodStackItem(3, 6, Colors.green, BorderRadius.circular(4.0)),
+  ///     BarChartRodStackItem(6, 9, Colors.blue, BorderRadius.circular(4.0)),
+  ///   ],
+  ///
   /// )
   /// ```
-  BarChartRodStackItem(this.fromY, this.toY, this.color);
+  BarChartRodStackItem(this.fromY, this.toY, this.color, [this.borderRadius = BorderRadius.zero]);
 
   /// Copies current [BarChartRodStackItem] to a new [BarChartRodStackItem],
   /// and replaces provided values.
@@ -433,11 +438,13 @@ class BarChartRodStackItem with EquatableMixin {
     double? fromY,
     double? toY,
     Color? color,
+    BorderRadius? borderRadius,
   }) {
     return BarChartRodStackItem(
       fromY ?? this.fromY,
       toY ?? this.toY,
       color ?? this.color,
+      borderRadius ?? this.borderRadius,
     );
   }
 
@@ -447,6 +454,7 @@ class BarChartRodStackItem with EquatableMixin {
       lerpDouble(a.fromY, b.fromY, t)!,
       lerpDouble(a.toY, b.toY, t)!,
       Color.lerp(a.color, b.color, t)!,
+      BorderRadius.lerp(a.borderRadius, b.borderRadius, t)!,
     );
   }
 
@@ -456,6 +464,7 @@ class BarChartRodStackItem with EquatableMixin {
         fromY,
         toY,
         color,
+        borderRadius,
       ];
 }
 

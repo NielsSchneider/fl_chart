@@ -29,6 +29,10 @@ class CanvasWrapper {
   void clipRect(Rect rect, {ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true}) =>
       canvas.clipRect(rect, clipOp: clipOp, doAntiAlias: doAntiAlias);
 
+  /// Directly calls [Cancas.clipRRect]
+  void clipRRect(RRect rRect, {bool doAntiAlias = true}) =>
+      canvas.clipRRect(rRect, doAntiAlias: doAntiAlias);
+
   /// Directly calls [Canvas.translate]
   void translate(double dx, double dy) => canvas.translate(dx, dy);
 
